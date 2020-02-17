@@ -63,6 +63,13 @@
 			&nbsp;
 		</td>
 </tr>
+<tr>
+		<th><?php echo __('Author'); ?></th>
+		<td>
+			<?php echo h($post['User']['username']); ?>
+			&nbsp;
+		</td>
+</tr>
 				</tbody>
 			</table>
 

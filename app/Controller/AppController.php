@@ -31,7 +31,59 @@ App::uses('Controller', 'Controller');
  * @link		https://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-    public function beforeFilter(){
+
+    const AUTHOR = 'author';
+    const ADMIN = 'admin';
+    const READER = 'reader';
+
+    public $components = array(
+        'Acl',
+        'Session',
+        'Flash',
+        'Auth' => array(
+            'authorize' => array(
+                'Actions' => array('actionPath' => 'controllers')
+            ),
+            'loginRedirect' => array(
+                'controller' => 'posts',
+                'action' => 'index'
+            ),
+            'logoutRedirect' => array(
+                'controller' => 'users',
+                'action' => 'login'
+            ),
+            'authenticate' => array(
+                'Form' => array(
+                    'passwordHasher' => 'Blowfish'
+                )
+            )
+        )
+    );
+
+    public $helpers = array('Html', 'Form', 'Session');
+
+    public function beforeFilter() {
+        //Configure AuthComponent
+        $this->Auth->loginAction = array(
+            'controller' => 'users',
+            'action' => 'login'
+        );
+//        $this->Auth->authorize = 'actions';
+//        $this->Auth->actionPath = 'controllers/';
+        $this->Auth->allow('index', 'view');
+        $this->Auth->allow();
+        $this->set('login', 0);
         $this->layout = 'bootstrap';
+
+    }
+
+    public function isAuthorized($user) {
+        // Admin can access every action
+        if (isset($user['role']) && $user['role'] === 'admin') {
+            return true;
+        }
+
+        // Default deny
+        return false;
     }
 }

@@ -15,6 +15,27 @@ class PostsController extends AppController {
  */
 	public $components = array('Paginator');
 
+	public function isAuthorized($user) {
+		// All registered users can add posts
+		if ($this->action === 'add') {
+			if ((isset($user['role']) && $user['role'] === 'author') || (isset($user['role']) && $user['role'] === 'admin')){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		// The owner of a post can edit and delete it
+		if (in_array($this->action, array('edit', 'delete'))) {
+			$postId = (int) $this->request->params['pass'][0];
+			if ($this->Post->isOwnedBy($postId, $user['id'])) {
+				return true;
+			}
+		}
+
+		return parent::isAuthorized($user);
+	}
+
 /**
  * index method
  *
@@ -22,7 +43,14 @@ class PostsController extends AppController {
  */
 	public function index() {
 		$this->Post->recursive = 0;
-		$this->set('posts', $this->Paginator->paginate());
+//		$this->Paginator->settings = [
+//			'contain' => [
+//				'Users'
+//			]
+//		];
+		$paginated = $this->Paginator->paginate();
+//		debug($paginated);die();
+		$this->set('posts', $paginated);
 	}
 
 /**
@@ -47,6 +75,7 @@ class PostsController extends AppController {
  */
 	public function add() {
 		if ($this->request->is('post')) {
+			$this->request->data['Post']['user_id'] = $this->Auth->user('id');
 			$this->Post->create();
 			if ($this->Post->save($this->request->data)) {
 				$this->Session->setFlash(__('The post has been saved.'), 'default', array('class' => 'alert alert-success'));

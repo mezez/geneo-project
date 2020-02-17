@@ -1,9 +1,9 @@
-<div class="posts index">
+<div class="widgets index">
 
 	<div class="row">
 		<div class="col-md-12">
 			<div class="page-header">
-				<h1><?php echo __('Posts'); ?></h1>
+				<h1><?php echo __('Widgets'); ?></h1>
 			</div>
 		</div><!-- end col md 12 -->
 	</div><!-- end row -->
@@ -18,7 +18,7 @@
 					<div class="panel-heading"><?php echo __('Actions'); ?></div>
 						<div class="panel-body">
 							<ul class="nav nav-pills nav-stacked">
-								<li><?php echo $this->Html->link('<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;'.__('New Post'), array('action' => 'add'), array('escape' => false)); ?></li>
+								<li><?php echo $this->Html->link('<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;'.__('New Widget'), array('action' => 'add'), array('escape' => false)); ?></li>
 													</ul>
 						</div><!-- end body -->
 				</div><!-- end panel -->
@@ -30,27 +30,23 @@
 				<thead>
 					<tr>
 						<th nowrap><?php echo $this->Paginator->sort('id'); ?></th>
-						<th nowrap><?php echo $this->Paginator->sort('title'); ?></th>
-						<th nowrap><?php echo $this->Paginator->sort('body'); ?></th>
-						<th nowrap><?php echo $this->Paginator->sort('created'); ?></th>
-						<th nowrap><?php echo $this->Paginator->sort('modified'); ?></th>
-						<th nowrap><?php echo $this->Paginator->sort('Author'); ?></th>
+						<th nowrap><?php echo $this->Paginator->sort('name'); ?></th>
+						<th nowrap><?php echo $this->Paginator->sort('part_no'); ?></th>
+						<th nowrap><?php echo $this->Paginator->sort('quantity'); ?></th>
 						<th class="actions"></th>
 					</tr>
 				</thead>
 				<tbody>
-				<?php foreach ($posts as $post): ?>
+				<?php foreach ($widgets as $widget): ?>
 					<tr>
-						<td nowrap><?php echo h($post['Post']['id']); ?>&nbsp;</td>
-						<td nowrap><?php echo h($post['Post']['title']); ?>&nbsp;</td>
-						<td nowrap><?php echo h($post['Post']['body']); ?>&nbsp;</td>
-						<td nowrap><?php echo h($post['Post']['created']); ?>&nbsp;</td>
-						<td nowrap><?php echo h($post['Post']['modified']); ?>&nbsp;</td>
-						<td nowrap><?php echo h($post['User']['username']); ?>&nbsp;</td>
+						<td nowrap><?php echo h($widget['Widget']['id']); ?>&nbsp;</td>
+						<td nowrap><?php echo h($widget['Widget']['name']); ?>&nbsp;</td>
+						<td nowrap><?php echo h($widget['Widget']['part_no']); ?>&nbsp;</td>
+						<td nowrap><?php echo h($widget['Widget']['quantity']); ?>&nbsp;</td>
 						<td class="actions">
-							<?php echo $this->Html->link('<span class="glyphicon glyphicon-search"></span>', array('action' => 'view', $post['Post']['id']), array('escape' => false)); ?>
-							<?php echo $this->Html->link('<span class="glyphicon glyphicon-edit"></span>', array('action' => 'edit', $post['Post']['id']), array('escape' => false)); ?>
-							<?php echo $this->Form->postLink('<span class="glyphicon glyphicon-remove"></span>', array('action' => 'delete', $post['Post']['id']), array('escape' => false), __('Are you sure you want to delete # %s?', $post['Post']['id'])); ?>
+							<?php echo $this->Html->link('<span class="glyphicon glyphicon-search"></span>', array('action' => 'view', $widget['Widget']['id']), array('escape' => false)); ?>
+							<?php echo $this->Html->link('<span class="glyphicon glyphicon-edit"></span>', array('action' => 'edit', $widget['Widget']['id']), array('escape' => false)); ?>
+							<?php echo $this->Form->postLink('<span class="glyphicon glyphicon-remove"></span>', array('action' => 'delete', $widget['Widget']['id']), array('escape' => false), __('Are you sure you want to delete # %s?', $widget['Widget']['id'])); ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
