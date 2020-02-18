@@ -46,6 +46,9 @@ class PostsController extends AppController
      */
     public function index()
     {
+        $userId = $this->Auth->user('id');
+        $role = $this->Auth->user('role');
+
         $this->Post->recursive = 0;
 //		$this->Paginator->settings = [
 //			'contain' => [
@@ -55,6 +58,8 @@ class PostsController extends AppController
         $paginated = $this->Paginator->paginate();
 //		debug($paginated);die();
         $this->set('posts', $paginated);
+        $this->set('userId', $userId);
+        $this->set('role', $role);
     }
 
     /**
