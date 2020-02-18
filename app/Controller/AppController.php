@@ -27,10 +27,11 @@ App::uses('Controller', 'Controller');
  * Add your application-wide methods in the class below, your controllers
  * will inherit them.
  *
- * @package		app.Controller
- * @link		https://book.cakephp.org/2.0/en/controllers.html#the-app-controller
+ * @package        app.Controller
+ * @link        https://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
-class AppController extends Controller {
+class AppController extends Controller
+{
 
     const AUTHOR = 'author';
     const ADMIN = 'admin';
@@ -62,7 +63,8 @@ class AppController extends Controller {
 
     public $helpers = array('Html', 'Form', 'Session');
 
-    public function beforeFilter() {
+    public function beforeFilter()
+    {
         //Configure AuthComponent
         $this->Auth->loginAction = array(
             'controller' => 'users',
@@ -70,14 +72,22 @@ class AppController extends Controller {
         );
 //        $this->Auth->authorize = 'actions';
 //        $this->Auth->actionPath = 'controllers/';
-        $this->Auth->allow('index', 'view');
-        $this->Auth->allow();
-        $this->set('login', 0);
+        //$this->Auth->allow('index', 'view');
+        //$this->Auth->allow();
+        $userId = $this->Auth->user('id');
+        if (isset($userId)) {
+            $this->set('loggedIn', 1);
+
+        }else{
+            $this->set('loggedIn', 0);
+        }
+        $this->set('login', 0);//used to know when on log in page
         $this->layout = 'bootstrap';
 
     }
 
-    public function isAuthorized($user) {
+    public function isAuthorized($user)
+    {
         // Admin can access every action
         if (isset($user['role']) && $user['role'] === 'admin') {
             return true;

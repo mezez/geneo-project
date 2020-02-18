@@ -33,22 +33,24 @@
 					<tr>
 						<th nowrap><?php echo $this->Paginator->sort('id'); ?></th>
 						<th nowrap><?php echo $this->Paginator->sort('username'); ?></th>
-						<th nowrap><?php echo $this->Paginator->sort('password'); ?></th>
-						<th nowrap><?php echo $this->Paginator->sort('group_id'); ?></th>
+<!--						<th nowrap>--><?php //echo $this->Paginator->sort('password'); ?><!--</th>-->
+						<th nowrap><?php echo $this->Paginator->sort('group'); ?></th>
 						<th nowrap><?php echo $this->Paginator->sort('role'); ?></th>
+						<th nowrap><?php echo $this->Paginator->sort('number_of_posts'); ?></th>
 						<th nowrap><?php echo $this->Paginator->sort('created'); ?></th>
 						<th nowrap><?php echo $this->Paginator->sort('modified'); ?></th>
 						<th class="actions"></th>
 					</tr>
 				</thead>
 				<tbody>
-				<?php foreach ($users as $user): ?>
+				<?php foreach ($users as $user): $numberOfPosts = count($user['Post']); ?>
 					<tr>
 						<td nowrap><?php echo h($user['User']['id']); ?>&nbsp;</td>
 						<td nowrap><?php echo h($user['User']['username']); ?>&nbsp;</td>
-						<td nowrap><?php echo h($user['User']['password']); ?>&nbsp;</td>
-						<td nowrap><?php echo h($user['User']['group_id']); ?>&nbsp;</td>
+<!--						<td nowrap>--><?php //echo h($user['User']['password']); ?><!--&nbsp;</td>-->
+						<td nowrap><?php echo h($user['Group']['name']); ?>&nbsp;</td>
 						<td nowrap><?php echo h($user['User']['role']); ?>&nbsp;</td>
+						<td nowrap><?php echo $numberOfPosts; ?>&nbsp;</td>
 						<td nowrap><?php echo h($user['User']['created']); ?>&nbsp;</td>
 						<td nowrap><?php echo h($user['User']['modified']); ?>&nbsp;</td>
 						<td class="actions">

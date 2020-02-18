@@ -31,7 +31,7 @@
 					<tr>
 						<th nowrap><?php echo $this->Paginator->sort('id'); ?></th>
 						<th nowrap><?php echo $this->Paginator->sort('title'); ?></th>
-						<th nowrap><?php echo $this->Paginator->sort('body'); ?></th>
+<!--						<th nowrap>--><?php //echo $this->Paginator->sort('body'); ?><!--</th>-->
 						<th nowrap><?php echo $this->Paginator->sort('created'); ?></th>
 						<th nowrap><?php echo $this->Paginator->sort('modified'); ?></th>
 						<th nowrap><?php echo $this->Paginator->sort('Author'); ?></th>
@@ -43,9 +43,9 @@
 					<tr>
 						<td nowrap><?php echo h($post['Post']['id']); ?>&nbsp;</td>
 						<td nowrap><?php echo h($post['Post']['title']); ?>&nbsp;</td>
-						<td nowrap><?php echo h($post['Post']['body']); ?>&nbsp;</td>
+<!--						<td nowrap>--><?php //echo h($post['Post']['body']); ?><!--&nbsp;</td>-->
 						<td nowrap><?php echo h($post['Post']['created']); ?>&nbsp;</td>
-						<td nowrap><?php echo h($post['Post']['modified']); ?>&nbsp;</td>
+						<td nowrap><?php echo h($post['Post']['modified'])?h($post['Post']['modified']):"Not Available"; ?>&nbsp;</td>
 						<td nowrap><?php echo h($post['User']['username']); ?>&nbsp;</td>
 						<td class="actions">
 							<?php echo $this->Html->link('<span class="glyphicon glyphicon-search"></span>', array('action' => 'view', $post['Post']['id']), array('escape' => false)); ?>
