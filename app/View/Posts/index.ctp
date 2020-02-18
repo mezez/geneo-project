@@ -18,6 +18,7 @@
                     <div class="panel-body">
                         <ul class="nav nav-pills nav-stacked">
                             <li><?php echo $this->Html->link('<span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;' . __('New Post'), array('action' => 'add'), array('escape' => false)); ?></li>
+                            <li><?php  echo isset($isAdmin)? $this->Html->link('<span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;List ' . __('Users'), array('controller'=>'users','action' => 'index'), array('escape' => false)):''; ?></li>
                         </ul>
                     </div><!-- end body -->
                 </div><!-- end panel -->

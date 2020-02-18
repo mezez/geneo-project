@@ -75,6 +75,11 @@ class AppController extends Controller
         //$this->Auth->allow('index', 'view');
         //$this->Auth->allow();
         $userId = $this->Auth->user('id');
+        $role = $this->Auth->user('role');
+
+        if($role == self::ADMIN){
+            $this->set('isAdmin', 1);
+        }
         if (isset($userId)) {
             $this->set('loggedIn', 1);
 

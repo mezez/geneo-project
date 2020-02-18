@@ -82,13 +82,13 @@ class User extends AppModel {
                 'message' => 'A password is required'
             )
         ),
-        'role' => array(
-            'valid' => array(
-                'rule' => array('inList', array('admin', 'author','reader')),
-                'message' => 'Please enter a valid role',
-                'allowEmpty' => false
-            )
-        )
+//        'role' => array(
+//            'valid' => array(
+//                'rule' => array('inList', array('admin', 'author','reader')),
+//                'message' => 'Please enter a valid role',
+//                'allowEmpty' => false
+//            )
+//        )
     );
 
 

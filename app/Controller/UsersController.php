@@ -21,11 +21,11 @@ class UsersController extends AppController
     public function index()
     {
         $this->User->Post->recursive = 0;
-		$this->Paginator->settings = [
-			'contain' => [
-				'Post'
-			]
-		];
+        $this->Paginator->settings = [
+            'contain' => [
+                'Post'
+            ]
+        ];
         $paginated = $this->Paginator->paginate();#
         $this->set('users', $paginated);
     }
@@ -120,9 +120,14 @@ class UsersController extends AppController
         $this->set('login', 1);
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
+                if ($this->Auth->user('active') == false) {
+                    $this->Session->setFlash(__('Your account is deactivated.'), 'default', array('class' => 'alert alert-danger'));
+
+                    return $this->redirect(['action' => 'logout']);
+                }
                 $this->set('login', 0);
                 //return $this->redirect($this->Auth->redirectUrl());
-                return $this->redirect(['controller' => 'posts','action' => 'index']);
+                return $this->redirect(['controller' => 'posts', 'action' => 'index']);
             }
             $this->Session->setFlash(__('Invalid username or password.'), 'default', array('class' => 'alert alert-danger'));
         }
@@ -176,7 +181,7 @@ class UsersController extends AppController
     public function logout()
     {
         $this->set('loggedIn', 0);
-        $this->Session->setFlash(__('Good bye.'), 'default', array('class' => 'alert alert-success'));
+        //->Session->setFlash(__('Good bye.'), 'default', array('class' => 'alert alert-success'));
         return $this->redirect($this->Auth->logout());
     }
 
@@ -221,15 +226,69 @@ class UsersController extends AppController
         exit;
     }
 
+    public function promote($id = null, $newRole)
+    {
+        $this->User->id = $id;
+        if (!$this->User->exists()) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        $this->request->allowMethod(['post', 'put']);
+
+        $user = $this->User->find('first', ['conditions' => ['User.id' => $id]]);
+        $group = $this->User->Group->find('first', ['conditions' => ['Group.name' => $newRole]]);
+        $groupId = $group['Group']['id'];
+
+        if (!empty($user) and !empty($groupId)) {
+            if (
+                $this->User->saveField('role', substr($newRole, 0, -1)) and $this->User->saveField('group_id', $groupId)
+            ) {
+                $this->Session->setFlash(__("{$user['User']['username']} is now a(n) {$newRole}"), 'default', array('class' => 'alert alert-success'));
+            } else {
+                $this->Session->setFlash(__('The update could not be completed. Please, try again.'), 'default', array('class' => 'alert alert-danger'));
+            }
+        }
+        return $this->redirect(array('action' => 'index'));
+    }
+
+    public function activate($id = null, $activate)
+    {
+        $this->User->id = $id;
+        if (!$this->User->exists()) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        $this->request->allowMethod(['post', 'put']);
+
+        $user = $this->User->find('first', ['conditions' => ['User.id' => $id]]);
+
+        if (!empty($user)) {
+            if ($this->User->updateAll(
+                ['User.active' => $activate],
+                ['User.id' => $user['User']['id']]
+            )
+            ) {
+                if ($activate == true) {
+                    $this->Session->setFlash(__("{$user['User']['username']} is now active"), 'default', array('class' => 'alert alert-success'));
+                } else {
+                    $this->Session->setFlash(__("{$user['User']['username']} is now inactive"), 'default', array('class' => 'alert alert-success'));
+
+                }
+            } else {
+                $this->Session->setFlash(__('The update could not be completed. Please, try again.'), 'default', array('class' => 'alert alert-danger'));
+            }
+        }
+        return $this->redirect(array('action' => 'index'));
+    }
+
+
     public function beforeFilter()
     {
         parent::beforeFilter();
-        $this->Auth->allow(['login','signup']);
+        $this->Auth->allow(['login', 'signup']);
         $this->Auth->allow('initDB');
 
-//        $role = $this->Auth->user('role');
-//        if($role == self::READER || $role == self::AUTHOR){
-//            $this->Auth->deny(['index', 'add','edit','delete']);
-//        }
+
+        if ($this->Auth->user('role') == self::ADMIN) {
+            $this->Auth->allow(['promote', 'activate']);
+        }
     }
 }
