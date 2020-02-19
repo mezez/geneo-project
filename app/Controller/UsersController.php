@@ -185,6 +185,8 @@ class UsersController extends AppController
         return $this->redirect($this->Auth->logout());
     }
 
+    //temporary action to implement acl.
+    //should be run once and commented out
     public function initDB()
     {
         $group = $this->User->Group;
@@ -226,6 +228,7 @@ class UsersController extends AppController
         exit;
     }
 
+    //action for promoting/demotng users
     public function promote($id = null, $newRole)
     {
         $this->User->id = $id;
@@ -250,6 +253,7 @@ class UsersController extends AppController
         return $this->redirect(array('action' => 'index'));
     }
 
+    //action for activating/deactivating users
     public function activate($id = null, $activate)
     {
         $this->User->id = $id;
