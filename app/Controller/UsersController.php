@@ -207,7 +207,7 @@ class UsersController extends AppController
         $this->Acl->allow($group, 'controllers/Posts/view');
         $this->Acl->allow($group, 'controllers/Posts/delete');
 
-        // allow readers to only add and edit on posts and widgets
+        // allow readers to only read posts
         $group->id = 3;
         $this->Acl->deny($group, 'controllers');
         $this->Acl->allow($group, 'controllers/Posts/view');
@@ -228,7 +228,7 @@ class UsersController extends AppController
         exit;
     }
 
-    //action for promoting/demotng users
+    //action for promoting/demoting users
     public function promote($id = null, $newRole)
     {
         $this->User->id = $id;
